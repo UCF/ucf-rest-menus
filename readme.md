@@ -10,6 +10,6 @@ WordPress 4.4+
 Must run on WordPress 4.4+ as it utilizes the Rest API. 
 
 ## Installation
-1. Download the zipped project and extract to `/wp-contentn/plugins/` within your WordPress installation directory.
+1. Download the zipped project and extract to `/wp-contentn/plugins/ucf-rest-menus/` within your WordPress installation directory.
 2. Activate the plugin within the Admin screen.
 3. Enjoy!
