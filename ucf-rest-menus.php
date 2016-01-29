@@ -4,7 +4,7 @@
 Plugin Name: UCF Rest Menus
 Plugin URI: http://github.com/UCF/ucf-rest-menus/
 Description: Provides rest api for accessing WordPress menus.
-Version: 0.0.1
+Version: 1.0.0
 Author: UCF Web Communications
 Author URI: http://github.com/UCF/
 License: MIT
@@ -24,13 +24,13 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
      * UCF Rest Menus class
      * WP API Menus support for WP API v2
      * @author Jim Barnes
-     * @since 0.0.1
+     * @since 1.0.0
      **/
     class UCF_REST_Menus {
         
         /*
          * Get WP API namespace
-         * @since 0.0.1
+         * @since 1.0.0
          * @return string
          */
         public static function get_api_namespace() {
@@ -40,7 +40,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
         /*
          * Get plugin namespace.
          * @author Jim Barnes
-         * @since 0.0.1
+         * @since 1.0.0
          * @return string
          */
         public static function get_plugin_namespace() {
@@ -50,7 +50,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
         /*
          * Register API routes
          * @author Jim Barnes
-         * @since 0.0.1
+         * @since 1.0.0
          * @return array
          */
         public function register_routes() {
@@ -93,7 +93,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
         /*
          * Get Menus
          * @author Jim Barnes
-         * @since 0.0.1
+         * @since 1.0.0
          * @returns array
          */
         public static function get_menus() {
@@ -124,7 +124,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
         /*
         * Get Menu Details
         * @author Jim Barnes
-        * @since 0.0.1
+        * @since 1.0.0
         * @return array
         */
         public function get_menu( $request ) {
@@ -161,7 +161,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
         
         /*
          * Get Menu Locations
-         * @since 0.0.1
+         * @since 1.0.0
          * @author Jim Barnes
          * @return array
          */
@@ -186,7 +186,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
        
        /*
         * Get menu for location
-        * @since 0.0.1
+        * @since 1.0.0
         * @author Jim Barnes
         * return array
         */
@@ -234,7 +234,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
          
         /*
         * Handle nested menu items.
-        * @since 0.0.1
+        * @since 1.0.0
         * @author Jim Barnes
         * @return string
         */
@@ -261,7 +261,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
            
         /*
         * Check if a collection of menu items contains an item that is the parent if of id.
-        * @since 0.0.1
+        * @since 1.0.0
         * @author Jim Barnes
         * @return array
         */
@@ -273,7 +273,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
         
         /*
          * Format a menu item for REST API
-         * @since 0.0.1
+         * @since 1.0.0
          * @author Jim Barnes
          * @return array
          */
@@ -306,7 +306,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
         
         /*
          * Returns all child nav_menu_items under a specific parent.
-         * @since 0.0.1
+         * @since 1.0.0
          * @author Jim Barnes
          * @return array
          */
