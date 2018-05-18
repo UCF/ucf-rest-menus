@@ -243,7 +243,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
             $children = array();
             
             array_map( function( $i ) use ( $parent, &$children, &$parents ) {
-                if ( $i['ID'] != $parent && $i['parent'] == $parent ) {
+                if ( $i['id'] != $parent && $i['parent'] == $parent ) {
                     $parents[] = $i;
                 } else {
                     $children[] = $i;
