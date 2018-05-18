@@ -251,8 +251,8 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
             }, $menu_items );
             
             foreach( $parents as $parent ) {
-                if ( $this->has_children( $children, $parent['ID'] ) ) {
-                    $parent['children'] = $this->nested_menu_items( $children, $parent['ID'] );
+                if ( $this->has_children( $children, $parent['id'] ) ) {
+                    $parent['children'] = $this->nested_menu_items( $children, $parent['id'] );
                 }
             }
             
