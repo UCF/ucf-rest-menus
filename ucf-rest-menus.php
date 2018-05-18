@@ -5,6 +5,7 @@ Plugin Name: UCF Rest Menus
 Plugin URI: http://github.com/UCF/ucf-rest-menus/
 Description: Provides rest api for accessing WordPress menus.
 Version: 1.0.0
+GitHub Plugin URI: UCF/ucf-rest-menus
 Author: UCF Web Communications
 Author URI: http://github.com/UCF/
 License: MIT
@@ -243,7 +244,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
             $children = array();
             
             array_map( function( $i ) use ( $parent, &$children, &$parents ) {
-                if ( $i['ID'] != $parent && $i['parent'] == $parent ) {
+                if ( $i['id'] != $parent && $i['parent'] == $parent ) {
                     $parents[] = $i;
                 } else {
                     $children[] = $i;
@@ -251,8 +252,8 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
             }, $menu_items );
             
             foreach( $parents as $parent ) {
-                if ( $this->has_children( $children, $parent['ID'] ) ) {
-                    $parent['children'] = $this->nested_menu_items( $children, $parent['ID'] );
+                if ( $this->has_children( $children, $parent['id'] ) ) {
+                    $parent['children'] = $this->nested_menu_items( $children, $parent['id'] );
                 }
             }
             
