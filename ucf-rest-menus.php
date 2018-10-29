@@ -106,17 +106,17 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 			$retval = array();
 
 			foreach( $wp_menus as $i=>$wp_menu ) {
-			$menu = (array) $wp_menu;
+				$menu = (array) $wp_menu;
 
-			$retval[$i]                = array();
-			$retval[$i]['ID']          = $menu['term_id'];
-			$retval[$i]['name']        = $menu['name'];
-			$retval[$i]['slug']        = $menu['slug'];
-			$retval[$i]['description'] = $menu['description'];
-			$retval[$i]['count']       = $menu['count'];
+				$retval[$i]                = array();
+				$retval[$i]['ID']          = $menu['term_id'];
+				$retval[$i]['name']        = $menu['name'];
+				$retval[$i]['slug']        = $menu['slug'];
+				$retval[$i]['description'] = $menu['description'];
+				$retval[$i]['count']       = $menu['count'];
 
-			$retval[$i]['meta']['links']['collection'] = $rest_url;
-			$retval[$i]['meta']['links']['self']       = $rest_url . $menu['term_id'];
+				$retval[$i]['meta']['links']['collection'] = $rest_url;
+				$retval[$i]['meta']['links']['self']       = $rest_url . $menu['term_id'];
 			}
 
 			return apply_filters( 'rest_menus_format_menus', $retval );
@@ -200,37 +200,31 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 				return array();
 			}
 
-			$wp_menu = wp_get_nav_menu_object( $locations[$location] );
-			$menu_items = wp_get_nav_menu_items( $wp_menu->term_id );
-			$sorted_menu_items = $top_level_menu_items = $menu_items_with_children = array();
+			$wp_menu_object = wp_get_nav_menu_object( $locations[$location] );
+			$wp_menu_items  = wp_get_nav_menu_items( $wp_menu_object->term_id );
 
-			foreach( (array) $menu_items as $menu_item ) {
-				$sorted_menu_items[$menu_item->menu_order] = $menu_item;
-			}
+			if ( $wp_menu_object ) {
+				$menu = (array) $wp_menu_object;
 
-			foreach( $sorted_menu_items as $menu_item ) {
-				if ( $menu_item->menu_item_parent != 0 ) {
-					$menu_items_with_children[$menu_item->menu_item_parent] = true;
-				} else {
-					$top_level_menu_items[] = $menu_item;
+				$retval['ID']          = abs( $menu['term_id'] );
+				$retval['name']        = $menu['name'];
+				$retval['slug']        = $menu['slug'];
+				$retval['description'] = $menu['description'];
+				$retval['count']       = $menu['count'];
+
+				$menu_items = array();
+				foreach( $wp_menu_items as $item ) {
+					$menu_items[] = $this->format_menu_item( $item );
 				}
+
+				$menu_items = $this->nested_menu_items( $menu_items, 0 );
+
+				$retval['items'] = $menu_items;
+				$retval['meta']['links']['collection'] = $rest_url;
+				$retval['meta']['links']['self']       = $rest_url . $id;
 			}
 
-			$retval = array();
-
-			if ( count( $sorted_menu_items ) > 0 ) {
-				foreach( $top_level_menu_items as $i=>$top_item ) {
-					$retval[$i] = $this->format_menu_item( $top_item, false );
-					if ( isset( $menu_items_with_children[$top_item->ID] ) ) {
-						$retval[$i]['children'] = $this->get_nav_menu_item_children( $top_item->ID, $menu_items, false );
-					} else {
-						$retval[$i]['children'] = array();
-					}
-				}
-			}
-
-			return $retval;
-
+			return apply_filters( 'rest_menus_format_menu', $retval );
 		}
 
 		/*
@@ -244,20 +238,20 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 			$children = array();
 
 			array_map( function( $i ) use ( $parent, &$children, &$parents ) {
-				if ( $i['id'] != $parent && $i['parent'] == $parent ) {
+				if ( $i['id'] !== $parent && $i['parent'] == $parent ) {
 					$parents[] = $i;
 				} else {
 					$children[] = $i;
 				}
 			}, $menu_items );
 
-			foreach( $parents as $parent ) {
+			foreach( $parents as &$parent ) {
 				if ( $this->has_children( $children, $parent['id'] ) ) {
 					$parent['children'] = $this->nested_menu_items( $children, $parent['id'] );
 				}
 			}
 
-			return $menu_items;
+			return $parents;
 		}
 
 		/*
