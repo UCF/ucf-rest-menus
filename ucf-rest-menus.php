@@ -128,7 +128,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 		* @since 1.0.0
 		* @return array
 		*/
-		public function get_menu( $request ) {
+		public static function get_menu( $request ) {
 			$id             = (int) $request['id'];
 			$rest_url       = get_rest_url() . self::get_plugin_namespace() . '/menus/';
 			$wp_menu_object = isset( $id ) ? wp_get_nav_menu_object( $id ) : null;
@@ -305,7 +305,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 		 * @author Jim Barnes
 		 * @return array
 		 */
-		private function get_nav_menu_item_children( $parent_id, $nev_menu_items, $depth=true ) {
+		private function get_nav_menu_item_children( $parent_id, $nav_menu_items, $depth=true ) {
 			$retval = array();
 
 			foreach( (array) $nav_menu_items as $nav_menu_item ) {
