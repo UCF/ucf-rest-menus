@@ -128,7 +128,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 		* @since 1.0.0
 		* @return array
 		*/
-		public static function get_menu( $request ) {
+		public function get_menu( $request ) {
 			$id             = (int) $request['id'];
 			$rest_url       = get_rest_url() . self::get_plugin_namespace() . '/menus/';
 			$wp_menu_object = isset( $id ) ? wp_get_nav_menu_object( $id ) : null;
