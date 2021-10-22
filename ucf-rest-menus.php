@@ -54,19 +54,19 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 		 * @since 1.0.0
 		 * @return array
 		 */
-		public function register_routes() {
+		public static function register_routes() {
 
 			register_rest_route( self::get_plugin_namespace(), '/menus', array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
-					'callback' => array( $this, 'get_menus' )
+					'callback' => array( 'UCF_Rest_Menus', 'get_menus' )
 				)
 			) );
 
 			register_rest_route( self::get_plugin_namespace(), '/menus/(?P<id>\d+)', array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
-					'callback' => array( $this, 'get_menu' ),
+					'callback' => array( 'UCF_Rest_Menus', 'get_menu' ),
 					'args'     => array(
 						'context' => array(
 							'default' => 'view'
@@ -78,14 +78,14 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 			register_rest_route( self::get_plugin_namespace(), '/menu-locations', array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
-					'callback' => array( $this, 'get_menu_locations' )
+					'callback' => array( 'UCF_Rest_Menus', 'get_menu_locations' )
 				)
 			) );
 
 			register_rest_route( self::get_plugin_namespace(), '/menu-locations/(?P<location>[a-zA-Z0-9_-]+)', array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
-					'callback' => array( $this, 'get_menu_location' )
+					'callback' => array( 'UCF_Rest_Menus', 'get_menu_location' )
 				)
 			) );
 
@@ -147,7 +147,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 
 				$menu_items = array();
 				foreach( $wp_menu_items as $item ) {
-					$menu_items[] = $self::format_menu_item( $item );
+					$menu_items[] = self::format_menu_item( $item );
 				}
 
 				$menu_items = self::nested_menu_items( $menu_items, 0 );
