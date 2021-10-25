@@ -54,19 +54,19 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 		 * @since 1.0.0
 		 * @return array
 		 */
-		public function register_routes() {
+		public static function register_routes() {
 
 			register_rest_route( self::get_plugin_namespace(), '/menus', array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
-					'callback' => array( $this, 'get_menus' )
+					'callback' => array( 'UCF_Rest_Menus', 'get_menus' )
 				)
 			) );
 
 			register_rest_route( self::get_plugin_namespace(), '/menus/(?P<id>\d+)', array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
-					'callback' => array( $this, 'get_menu' ),
+					'callback' => array( 'UCF_Rest_Menus', 'get_menu' ),
 					'args'     => array(
 						'context' => array(
 							'default' => 'view'
@@ -78,14 +78,14 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 			register_rest_route( self::get_plugin_namespace(), '/menu-locations', array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
-					'callback' => array( $this, 'get_menu_locations' )
+					'callback' => array( 'UCF_Rest_Menus', 'get_menu_locations' )
 				)
 			) );
 
 			register_rest_route( self::get_plugin_namespace(), '/menu-locations/(?P<location>[a-zA-Z0-9_-]+)', array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
-					'callback' => array( $this, 'get_menu_location' )
+					'callback' => array( 'UCF_Rest_Menus', 'get_menu_location' )
 				)
 			) );
 
@@ -147,10 +147,10 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 
 				$menu_items = array();
 				foreach( $wp_menu_items as $item ) {
-					$menu_items[] = $this->format_menu_item( $item );
+					$menu_items[] = self::format_menu_item( $item );
 				}
 
-				$menu_items = $this->nested_menu_items( $menu_items, 0 );
+				$menu_items = self::nested_menu_items( $menu_items, 0 );
 
 				$retval['items'] = $menu_items;
 				$retval['meta']['links']['collection'] = $rest_url;
@@ -191,7 +191,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 		* @author Jim Barnes
 		* return array
 		*/
-		public function get_menu_location( $request ) {
+		public static function get_menu_location( $request ) {
 			$params     = $request->get_params();
 			$location   = $params['location'];
 			$locations  = get_nav_menu_locations();
@@ -214,10 +214,10 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 
 				$menu_items = array();
 				foreach( $wp_menu_items as $item ) {
-					$menu_items[] = $this->format_menu_item( $item );
+					$menu_items[] = self::format_menu_item( $item );
 				}
 
-				$menu_items = $this->nested_menu_items( $menu_items, 0 );
+				$menu_items = self::nested_menu_items( $menu_items, 0 );
 
 				$retval['items'] = $menu_items;
 				$retval['meta']['links']['collection'] = $rest_url;
@@ -233,7 +233,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 		* @author Jim Barnes
 		* @return string
 		*/
-		private function nested_menu_items( &$menu_items, $parent=null ) {
+		private static function nested_menu_items( &$menu_items, $parent=null ) {
 			$parents = array();
 			$children = array();
 
@@ -246,8 +246,8 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 			}, $menu_items );
 
 			foreach( $parents as &$parent ) {
-				if ( $this->has_children( $children, $parent['id'] ) ) {
-					$parent['children'] = $this->nested_menu_items( $children, $parent['id'] );
+				if ( self::has_children( $children, $parent['id'] ) ) {
+					$parent['children'] = self::nested_menu_items( $children, $parent['id'] );
 				}
 			}
 
@@ -260,7 +260,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 		* @author Jim Barnes
 		* @return array
 		*/
-		private function has_children( $items, $id ) {
+		private static function has_children( $items, $id ) {
 			return array_filter( $items, function( $i ) use ( $id ) {
 				return $i['parent'] == $id;
 			} );
@@ -272,7 +272,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 		 * @author Jim Barnes
 		 * @return array
 		 */
-		public function format_menu_item( $menu_item, $children=false, $menu=array() ) {
+		public static function format_menu_item( $menu_item, $children=false, $menu=array() ) {
 			$item = (array) $menu_item;
 
 			$retval = array(
@@ -293,7 +293,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 			);
 
 			if ( $children === true && ! empty( $menu ) ) {
-				$retval['children'] = $this->get_nav_menu_item_children( $item['ID'], $menu );
+				$retval['children'] = self::get_nav_menu_item_children( $item['ID'], $menu );
 			}
 
 			return apply_filters( 'rest_menus_format_menu_item', $retval );
@@ -305,15 +305,15 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 		 * @author Jim Barnes
 		 * @return array
 		 */
-		private function get_nav_menu_item_children( $parent_id, $nav_menu_items, $depth=true ) {
+		private static function get_nav_menu_item_children( $parent_id, $nav_menu_items, $depth=true ) {
 			$retval = array();
 
 			foreach( (array) $nav_menu_items as $nav_menu_item ) {
 				if ( $nav_menu_item->menu_item_parent == $parent_id ) {
-					$retval[] = $this->format_menu_item( $nav_menu_item, true, $nav_menu_items );
+					$retval[] = self::format_menu_item( $nav_menu_item, true, $nav_menu_items );
 
 					if ( $depth ) {
-						if ( $children = $this->get_nav_menu_item_children( $nav_menu_item->ID, $nav_menu_items ) ) {
+						if ( $children = self::get_nav_menu_item_children( $nav_menu_item->ID, $nav_menu_items ) ) {
 							$retval = array_merge( $retval, $children );
 						}
 					}
@@ -328,8 +328,7 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 if ( ! function_exists( 'ucf_rest_menus_init' ) ) {
 
 	function ucf_rest_menus_init() {
-		$class = new UCF_REST_Menus();
-		add_filter( 'rest_api_init', array( $class, 'register_routes' ) );
+		add_filter( 'rest_api_init', array( 'UCF_REST_Menus', 'register_routes' ) );
 	}
 
 	add_action( 'init', 'ucf_rest_menus_init' );
