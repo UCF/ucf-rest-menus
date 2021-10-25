@@ -4,7 +4,7 @@
 Plugin Name: UCF Rest Menus
 Plugin URI: http://github.com/UCF/ucf-rest-menus/
 Description: Provides rest api for accessing WordPress menus.
-Version: 1.0.2
+Version: 1.0.4
 GitHub Plugin URI: UCF/ucf-rest-menus
 Author: UCF Web Communications
 Author URI: http://github.com/UCF/
