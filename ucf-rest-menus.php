@@ -4,7 +4,7 @@
 Plugin Name: UCF Rest Menus
 Plugin URI: http://github.com/UCF/ucf-rest-menus/
 Description: Provides rest api for accessing WordPress menus.
-Version: 1.0.4
+Version: 1.0.5
 GitHub Plugin URI: UCF/ucf-rest-menus
 Author: UCF Web Communications
 Author URI: http://github.com/UCF/
@@ -59,7 +59,8 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 			register_rest_route( self::get_plugin_namespace(), '/menus', array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
-					'callback' => array( 'UCF_Rest_Menus', 'get_menus' )
+					'callback' => array( 'UCF_Rest_Menus', 'get_menus' ),
+					'permission_callback' => '__return_true'
 				)
 			) );
 
@@ -71,21 +72,24 @@ if ( ! class_exists( 'UCF_REST_Menus' ) ) {
 						'context' => array(
 							'default' => 'view'
 						)
-					)
+					),
+					'permission_callback' => '__return_true'
 				)
 			) );
 
 			register_rest_route( self::get_plugin_namespace(), '/menu-locations', array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
-					'callback' => array( 'UCF_Rest_Menus', 'get_menu_locations' )
+					'callback' => array( 'UCF_Rest_Menus', 'get_menu_locations' ),
+					'permission_callback' => '__return_true'
 				)
 			) );
 
 			register_rest_route( self::get_plugin_namespace(), '/menu-locations/(?P<location>[a-zA-Z0-9_-]+)', array(
 				array(
 					'methods'  => WP_REST_Server::READABLE,
-					'callback' => array( 'UCF_Rest_Menus', 'get_menu_location' )
+					'callback' => array( 'UCF_Rest_Menus', 'get_menu_location' ),
+					'permission_callback' => '__return_true'
 				)
 			) );
 
