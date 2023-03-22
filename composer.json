@@ -1,0 +1,8 @@
+{
+    "name": "ucf/ucf-rest-menus",
+    "description": "This is a WordPress plugin that creates a read only rest api for menus within WordPress.",
+    "type": "wordpress-plugin",
+    "require": {
+        "composer/installers": "~1.0"
+    }
+}
